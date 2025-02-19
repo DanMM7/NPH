@@ -9,7 +9,7 @@ def create_packet(version, header_length, service_type, payload):
         elif service_type == 2:  # Float
             payload_data = struct.pack("!f", float(payload))
         elif service_type == 3:  # String
-            payload_data = payload.encode()
+            payload_data = payload.encode()  # Ensure encoding as bytes
         else:
             raise ValueError("Invalid service type")
 
@@ -17,7 +17,7 @@ def create_packet(version, header_length, service_type, payload):
         header_format = "!BBBH"
         header = struct.pack(header_format, version, header_length, service_type, payload_length)
 
-        return header + payload_data  # Full packet
+        return header + payload_data  # Full packet in bytes
 
     except Exception as e:
         print("Error creating packet:", e)

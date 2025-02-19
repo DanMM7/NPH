@@ -9,7 +9,7 @@ def create_packet(version, header_length, service_type, payload):
         elif service_type == 2:  # Float
             payload_data = struct.pack("!f", float(payload))
         elif service_type == 3:  # String
-            payload_data = payload.encode()  # Ensure encoding as bytes
+            payload_data = payload.encode()
         else:
             raise ValueError("Invalid service type")
 
@@ -17,7 +17,7 @@ def create_packet(version, header_length, service_type, payload):
         header_format = "!BBBH"
         header = struct.pack(header_format, version, header_length, service_type, payload_length)
 
-        return header + payload_data  # Full packet in bytes
+        return header + payload_data
 
     except Exception as e:
         print("Error creating packet:", e)
@@ -29,7 +29,7 @@ if __name__ == "__main__":
     parser.add_argument("--header_length", type=int, required=True, help="Length of the packet header")
     parser.add_argument("--service_type", type=int, required=True, help="Service type (1=int, 2=float, 3=string)")
     parser.add_argument("--payload", type=str, required=True, help="Payload to be packed into the packet")
-    parser.add_argument("--host", type=str, default="localhost", help="Server host")
+    parser.add_argument("--host", type=str, default="34.172.13.65", help="Server external IP")
     parser.add_argument("--port", type=int, default=12345, help="Server port")
 
     args = parser.parse_args()

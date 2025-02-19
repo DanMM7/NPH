@@ -33,8 +33,8 @@ def unpack_packet(conn, header_format):
         return None
 
 if __name__ == "__main__":
-    host, port = "localhost", 12345
-    header_format = "!BBBH"  # Version (1 byte), Header Length (1 byte), Service Type (1 byte), Payload Length (2 bytes)
+    host, port = "0.0.0.0", 12345  # Bind to all interfaces
+    header_format = "!BBBH"
 
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         s.bind((host, port))

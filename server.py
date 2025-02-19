@@ -10,19 +10,23 @@ def unpack_packet(conn, header_format):
             return None
 
         version, header_length, service_type, payload_length = struct.unpack(header_format, header_data)
-        payload = conn.recv(payload_length)
+        payload_data = conn.recv(payload_length)
 
+        # Decode payload based on service type
         if service_type == 1:  # Integer
-            payload = struct.unpack("!i", payload)[0]
+            payload = struct.unpack("!i", payload_data)[0]
         elif service_type == 2:  # Float
-            payload = struct.unpack("!f", payload)[0]
+            payload = struct.unpack("!f", payload_data)[0]
         elif service_type == 3:  # String
-            payload = payload.decode()
+            payload = payload_data.decode()
 
+        # Print received packet details
         packet_info = f"Version: {version}, Header Length: {header_length}, Service Type: {service_type}, Payload Length: {payload_length}, Payload: {payload}"
         print("Received Packet:", packet_info)
 
-        return header_data + payload  # Send back full packet (header + payload)
+        # Convert everything back to bytes for sending back to the client
+        response_packet = header_data + payload_data  # Ensuring both are bytes
+        return response_packet
 
     except Exception as e:
         print("Error unpacking packet:", e)
